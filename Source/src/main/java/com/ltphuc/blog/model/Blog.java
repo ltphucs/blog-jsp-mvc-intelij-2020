@@ -101,13 +101,13 @@ public class Blog {
     static {
         ColumnID="id";
         ColumnTitle="title";
-       ColumnShortContent="shortContent";
-        ColumnFullContent="fullContent";
-        ColumnPublishDate="publishDate";
-       ColumnImageUrl="imageUrl";
+        ColumnShortContent="short-content";
+        ColumnFullContent="full-content";
+        ColumnPublishDate="publish-date";
+        ColumnImageUrl="image-url";
         ColumnViews="views";
        ColumnLikes="likes";
-        ColumnIdCategory="idCategory";
+        ColumnIdCategory="id-category";
         ColumnCategoryName="categoryName";
     }
 
