@@ -37,13 +37,9 @@ public class MessageHelper {
         E_BLOG_GETLIST ="Lỗi khi lấy danh sách User từ cơ sở dữ liệu";
         E_BLOG_FINDUP ="Lỗi khi truy vấn thông tin Category";
 
-
-
         A_ADD_SUCCESS="Thêm mới thành công";
         A_UPDATE_SUCCESS="Cập nhật thành công";
         A_DELETE_SUCCESS="Xóa thành công";
-
-
 
     }
 }

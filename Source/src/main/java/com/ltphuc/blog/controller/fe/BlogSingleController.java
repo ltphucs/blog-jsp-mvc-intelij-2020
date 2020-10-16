@@ -1,5 +1,9 @@
 package com.ltphuc.blog.controller.fe;
 
+import com.ltphuc.blog.common.model.ResponseListModel;
+import com.ltphuc.blog.common.model.ResponseModel;
+import com.ltphuc.blog.common.ui.ErrorHelper;
+import com.ltphuc.blog.common.ui.MessageHelper;
 import com.ltphuc.blog.model.About;
 import com.ltphuc.blog.model.Blog;
 import com.ltphuc.blog.model.Category;
@@ -30,24 +34,39 @@ public class BlogSingleController extends HttpServlet {
             BlogService blogService = new BlogService();
             AboutService aboutService = new AboutService();
 
-            List<Category> listCat = categoryService.findAll().getList();
-            Blog blog = blogService.findById(id).getObject();
-            blogService.incView(id);
-            //
-            List<Blog> listTop5Popular = blogService.findTopViews(5).getList();
-            List<Blog> listTop3Related = blogService.findByCategory(blog.getIdCategory(),3).getList();
+            ResponseListModel<Category> categoryServiceAll = categoryService.findAll();
+            ResponseModel<Blog> blogServiceById = blogService.findById(id);
+            ResponseListModel<Blog> blogServiceTopViews = blogService.findTopViews(5);
 
+            if (!categoryServiceAll.isStatus()||!blogServiceById.isStatus()||!blogServiceTopViews.isStatus()){
+                ErrorHelper.showUIErrorPage(request,response,null, MessageHelper.E_INPUT_INVALIDATE);
+                return;
+            }
+
+            List<Category> listCat = categoryServiceAll.getList();
+            Blog blog = blogServiceById.getObject();
+            List<Blog> listTop5Popular = blogServiceTopViews.getList();
             About about = aboutService.findTop1().getObject();
+
+            ResponseListModel<Blog> blogServiceByCategory = blogService.findByCategory(blog.getIdCategory(), 3);
+            if (!blogServiceByCategory.isStatus()){
+                ErrorHelper.showUIErrorPage(request,response,null, MessageHelper.E_INPUT_INVALIDATE);
+                return;
+            }
+            List<Blog> listTop3Related = blogServiceByCategory.getList();
+
+            blogService.incView(id);
+
             request.setAttribute("blog", blog);
             request.setAttribute("about", about);
             request.setAttribute("listCat", listCat);
             request.setAttribute("listTop5Popular", listTop5Popular);
             request.setAttribute("listTop3Related", listTop3Related);
 
-            RequestDispatcher rd=request.getRequestDispatcher("views/fe/ui-details.jsp");
+            RequestDispatcher rd=request.getRequestDispatcher("views/fe/ui-details.jsp")s;
             rd.forward(request, response);
         }catch (Exception ex){
-
+            ErrorHelper.showUIErrorPage(request,response,ex, MessageHelper.E_INPUT_INVALIDATE);
         }
 
     }

@@ -1,6 +1,8 @@
 package com.ltphuc.blog.controller.fe;
 
 import com.ltphuc.blog.common.model.ResponseListModel;
+import com.ltphuc.blog.common.ui.ErrorHelper;
+import com.ltphuc.blog.common.ui.MessageHelper;
 import com.ltphuc.blog.model.About;
 import com.ltphuc.blog.model.Blog;
 import com.ltphuc.blog.model.Category;
@@ -29,21 +31,30 @@ public class HomeController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ResponseListModel<Category> rtCategory = this.catService.findAll();
-        //
-        About about = this.aboutService.findTop1().getObject();
-        //
-        ResponseListModel<Blog> list3Blogs =this.blogService.findTopPublishDate(3);
-        ResponseListModel<Blog> list12Blogs =this.blogService.findTopPublishDate(9);
-        ResponseListModel<Blog> list5Popular =this.blogService.findTopViews(5);
-        //
-        request.setAttribute("listCate", rtCategory.getList());
-        request.setAttribute("list3Blogs", list3Blogs.getList());
-        request.setAttribute("list12Blogs", list12Blogs.getList());
-        request.setAttribute("list5Popular", list5Popular.getList());
-        request.setAttribute("about", about);
-        //
-        RequestDispatcher rd = request.getRequestDispatcher("views/fe/ui-home.jsp");
-        rd.forward(request, response);
+        try{
+            ResponseListModel<Category> rtCategory = this.catService.findAll();
+            //
+            About about = this.aboutService.findTop1().getObject();
+            //
+            ResponseListModel<Blog> list3Blogs =this.blogService.findTopPublishDate(3);
+            ResponseListModel<Blog> list12Blogs =this.blogService.findTopPublishDate(9);
+            ResponseListModel<Blog> list5Popular =this.blogService.findTopViews(5);
+            //
+            if (!list3Blogs.isStatus()||!list12Blogs.isStatus()||!list5Popular.isStatus()){
+                ErrorHelper.showUIErrorPage(request,response,null, MessageHelper.E_INPUT_INVALIDATE);
+                return;
+            }
+            //
+            request.setAttribute("listCate", rtCategory.getList());
+            request.setAttribute("list3Blogs", list3Blogs.getList());
+            request.setAttribute("list12Blogs", list12Blogs.getList());
+            request.setAttribute("list5Popular", list5Popular.getList());
+            request.setAttribute("about", about);
+            //
+            RequestDispatcher rd = request.getRequestDispatcher("views/fe/ui-home.jsp");
+            rd.forward(request, response);
+        }catch (Exception ex){
+            ErrorHelper.showUIErrorPage(request,response,ex, MessageHelper.E_INPUT_INVALIDATE);
+        }
     }
 }

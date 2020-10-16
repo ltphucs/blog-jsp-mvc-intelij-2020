@@ -17,7 +17,7 @@ public class ErrorHelper  {
     public static void showUIErrorPage(HttpServletRequest request, HttpServletResponse response, Exception ex, String message) throws ServletException, IOException {
         request.setAttribute("ex",ex);
         request.setAttribute("message",message);
-        RequestDispatcher rd = request.getRequestDispatcher("views/ui/error.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("views/fe/error.jsp");
         rd.forward(request, response);
     }
 }

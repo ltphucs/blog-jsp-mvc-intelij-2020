@@ -2,6 +2,8 @@ package com.ltphuc.blog.controller.fe;
 
 import com.ltphuc.blog.common.model.ResponseListModel;
 import com.ltphuc.blog.common.model.ResponseModel;
+import com.ltphuc.blog.common.ui.ErrorHelper;
+import com.ltphuc.blog.common.ui.MessageHelper;
 import com.ltphuc.blog.model.About;
 import com.ltphuc.blog.model.Blog;
 import com.ltphuc.blog.model.Category;
@@ -40,21 +42,27 @@ public class BlogCategoryController extends HttpServlet {
             ResponseListModel<Blog> resTop5Popular = blogService.findTopViews(5);
             ResponseModel<About> resAbout= aboutService.findTop1();
 
-            Category category = resCate.getObject();
-            List<Category> listCat = resListCate.getList();
-            List<Blog> listBlogByCatId = resBlogByCate.getList();
-            List<Blog> listTop5Popular = resTop5Popular.getList();
-            About about = resAbout.getObject();
+            if (!resCate.isStatus()||!resListCate.isStatus()||!resBlogByCate.isStatus()||!resTop5Popular.isStatus()||!resAbout.isStatus()){
+                ErrorHelper.showUIErrorPage(request,response,null, MessageHelper.E_INPUT_INVALIDATE);
+            }else{
+                Category category = resCate.getObject();
+                List<Category> listCat = resListCate.getList();
+                List<Blog> listBlogByCatId = resBlogByCate.getList();
+                List<Blog> listTop5Popular = resTop5Popular.getList();
+                About about = resAbout.getObject();
 
-            request.setAttribute("cat", category);
-            request.setAttribute("about", about);
-            request.setAttribute("listCat", listCat);
-            request.setAttribute("listTop5Popular", listTop5Popular);
-            request.setAttribute("listBlog", listBlogByCatId);
-            RequestDispatcher rd=request.getRequestDispatcher("views/fe/ui-category.jsp");
-            rd.forward(request, response);
+                request.setAttribute("cat", category);
+                request.setAttribute("about", about);
+                request.setAttribute("listCat", listCat);
+                request.setAttribute("listTop5Popular", listTop5Popular);
+                request.setAttribute("listBlog", listBlogByCatId);
+                RequestDispatcher rd=request.getRequestDispatcher("views/fe/ui-category.jsp");
+                rd.forward(request, response);
+            }
+
+
         }catch (Exception ex){
-
+            ErrorHelper.showUIErrorPage(request,response,ex, MessageHelper.E_INPUT_INVALIDATE);
         }
     }
 }
