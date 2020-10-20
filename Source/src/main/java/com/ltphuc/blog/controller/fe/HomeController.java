@@ -1,6 +1,7 @@
 package com.ltphuc.blog.controller.fe;
 
 import com.ltphuc.blog.common.model.ResponseListModel;
+import com.ltphuc.blog.common.service.ResourcesHelper;
 import com.ltphuc.blog.common.ui.ErrorHelper;
 import com.ltphuc.blog.common.ui.MessageHelper;
 import com.ltphuc.blog.model.About;
@@ -32,6 +33,7 @@ public class HomeController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
+
             ResponseListModel<Category> rtCategory = this.catService.findAll();
             //
             About about = this.aboutService.findTop1().getObject();

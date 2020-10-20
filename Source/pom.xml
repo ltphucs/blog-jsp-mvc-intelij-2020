@@ -52,8 +52,6 @@
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.16</version>
     </dependency>
-
-
   </dependencies>
 
   <build>
@@ -91,5 +89,10 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
   </build>
 </project>

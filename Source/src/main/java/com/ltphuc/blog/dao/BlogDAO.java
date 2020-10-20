@@ -127,7 +127,7 @@ public class BlogDAO extends DAOHelper implements BaseDAO<Blog> {
     public List<Blog> findByCategory(int idCategory, int topN) throws SQLException {
         String SQL_FIND_BY_CATEGORY_TOP = "SELECT blogs.*, categories.name as categoryName FROM blogs INNER JOIN categories "
                 + "ON blogs.`id-category` = categories.id WHERE categories.id=? ORDER BY blogs.`publish-date` DESC LIMIT ?";
-        return getBlogs(idCategory, SQL_FIND_BY_CATEGORY_TOP);
+        return getBlogs(idCategory,topN, SQL_FIND_BY_CATEGORY_TOP);
     }
 
     private List<Blog> getBlogs(int idCategory,int topN, String SQL_FIND_BY_CATEGORY_TOP) throws SQLException {

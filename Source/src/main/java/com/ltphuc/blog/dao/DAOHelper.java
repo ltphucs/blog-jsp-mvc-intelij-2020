@@ -1,5 +1,7 @@
 package com.ltphuc.blog.dao;
 
+import com.ltphuc.blog.common.service.ResourcesHelper;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,9 +12,10 @@ public class DAOHelper {
     private static final String jdbcPassword;
 
     static {
-        jdbcUrl="jdbc:mysql://localhost:3306/demo-blog?useEncoding=true&characterEncoding=UTF-8";
-        jdbcPassword="";
-        jdbcUsername="root";
+        ResourcesHelper resourcesHelper = new ResourcesHelper("app");
+        jdbcUrl= resourcesHelper.getValue("db.jdbc.url");//"jdbc:mysql://localhost:3306/demo-blog?useEncoding=true&characterEncoding=UTF-8";
+        jdbcPassword=resourcesHelper.getValue("db.jdbc.password");//"";
+        jdbcUsername=resourcesHelper.getValue("db.jdbc.username");//"root";
     }
 
     protected Connection connection;

@@ -63,7 +63,7 @@ public class BlogSingleController extends HttpServlet {
             request.setAttribute("listTop5Popular", listTop5Popular);
             request.setAttribute("listTop3Related", listTop3Related);
 
-            RequestDispatcher rd=request.getRequestDispatcher("views/fe/ui-details.jsp")s;
+            RequestDispatcher rd=request.getRequestDispatcher("views/fe/ui-details.jsp");
             rd.forward(request, response);
         }catch (Exception ex){
             ErrorHelper.showUIErrorPage(request,response,ex, MessageHelper.E_INPUT_INVALIDATE);
